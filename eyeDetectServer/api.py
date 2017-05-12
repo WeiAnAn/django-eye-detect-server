@@ -57,15 +57,16 @@ def isBlink(request):
     leftEye, rightEye, lPupil, rPupil = eyedetect.findLandmarks(img, uuidFileName)
     
     if(len(leftEye) == 0):
-        r = Record(user_id=user_id, blink=-1)
+        r = Record(user_id=user_id, blink=-1, EAR=-1)
         return JsonResponse({"blink":-1})
         
     EAR = (eyedetect.getEAR(leftEye)+eyedetect.getEAR(rightEye))/2
     threshold = (float)(request.POST.get('threshold'))
     if(EAR > threshold):
-        r = Record(user_id=user_id, blink=1)
+        r = Record(user_id=user_id, blink=1, EAR=EAR)
         r.save()
         return JsonResponse({"blink":1})
+    r = Record(user_id=user_id, blink=0, EAR=EAR)
     return JsonResponse({"blink":0})
 
 def getRecord(request):
