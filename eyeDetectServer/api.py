@@ -62,6 +62,7 @@ def isBlink(request):
     
     if(len(leftEye) == 0):
         r = Record(user_id=user_id, blink=-1, EAR=-1)
+        r.save()
         return JsonResponse({"blink":-1})
         
     EAR = (eyedetect.getEAR(leftEye)+eyedetect.getEAR(rightEye))/2
@@ -71,6 +72,7 @@ def isBlink(request):
         r.save()
         return JsonResponse({"blink":1})
     r = Record(user_id=user_id, blink=0, EAR=EAR)
+    r.save()
     return JsonResponse({"blink":0})
 
 def getRecord(request):
