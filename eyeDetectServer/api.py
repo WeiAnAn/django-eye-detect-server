@@ -15,9 +15,13 @@ def getToken(request):
 @csrf_exempt
 def findLandmark(request):
     
-    user, user_id = (str(request.FILES['img']).split('.')[0]).split('-')
+    #user, user_id = (str(request.FILES['img']).split('.')[0]).split('-')
     uuidFileName = str(uuid.uuid4())
+    
     handle_uploaded_file(request.FILES['img'], uuidFileName)
+    #except KeyError:
+    #    handle_uploaded_file(request.POST.get("img","shit"),uuidFileName)
+
     img = eyedetect.openJPG('./eyeDetectServer/image/'+uuidFileName)
     leftEye, rightEye, lPupil, rPupil = eyedetect.findLandmarks(img, uuidFileName)
     
