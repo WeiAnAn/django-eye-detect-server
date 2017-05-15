@@ -45,11 +45,16 @@ def findLandmarkYUV(request):
     
     thread.start_new_thread(delete_uploaded_file,(uuidFileName,))
     # landmark = []
+    EAR = -1
+    if(len(leftEye)!=0):
+	EAR = (eyedetect.getEAR(leftEye)+eyedetect.getEAR(rightEye))/2
+   
     return JsonResponse({
         'leftEye': leftEye,
         'rightEye': rightEye,
         'lPupil': lPupil,
-        'rPupil': rPupil
+        'rPupil': rPupil,
+        'EAR': EAR
     })
 
 @csrf_exempt
