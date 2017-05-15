@@ -26,13 +26,17 @@ def findLandmark(request):
     leftEye, rightEye, lPupil, rPupil = eyedetect.findLandmarks(img, uuidFileName)
     
     thread.start_new_thread(delete_uploaded_file,(uuidFileName,))
-
+    
+    EAR = -1
+    if(len(leftEye)!=0):
+	EAR = (eyedetect.getEAR(leftEye)+eyedetect.getEAR(rightEye))/2
     # landmark = []
     return JsonResponse({
         'leftEye': leftEye,
         'rightEye': rightEye,
         'lPupil': lPupil,
-        'rPupil': rPupil
+        'rPupil': rPupil,
+	'EAR': EAR
     })
 
 @csrf_exempt
