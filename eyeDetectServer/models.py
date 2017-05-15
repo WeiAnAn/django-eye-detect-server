@@ -5,6 +5,7 @@ from django.db import models
 # Create your models here.
 class Record(models.Model):
     time = models.IntegerField()
+    user = models.CharField(max_length=30, default="hgod")
     blink = models.IntegerField(default=1)
     EAR = models.FloatField(default=0)
     threshold = models.FloatField(default=-1)

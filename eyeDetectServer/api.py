@@ -41,7 +41,7 @@ def findLandmark(request):
 
 @csrf_exempt
 def findLandmarkYUV(request):
-    user, user_id = (str(request.FILES['img']).split('.')[0]).split('-')
+    user, time = (str(request.FILES['img']).split('.')[0]).split('-')
     uuidFileName = str(uuid.uuid4())
     handle_uploaded_file(request.FILES['img'], uuidFileName)
     img = eyedetect.openYUV('./eyeDetectServer/image/'+uuidFileName)
@@ -72,17 +72,17 @@ def isBlink(request):
     leftEye, rightEye, lPupil, rPupil = eyedetect.findLandmarksWithoutPupil(img, uuidFileName)
     
     if(len(leftEye) == 0):
-        r = Record(time=time, blink=-1, EAR=-1, index=index, threshold=threshold)
+        r = Record(time=time, blink=-1, EAR=-1, index=index, threshold=threshold, user=user)
         r.save()
         return JsonResponse({"blink":-1})
         
     EAR = (eyedetect.getEAR(leftEye)+eyedetect.getEAR(rightEye))/2
     threshold = (float)(request.POST.get('threshold'))
     if(EAR > threshold):
-        r = Record(time=time, blink=1, EAR=EAR, index=index, threshold=threshold)
+        r = Record(time=time, blink=1, EAR=EAR, index=index, threshold=threshold, user=user)
         r.save()
         return JsonResponse({"blink":1})
-    r = Record(time=time, blink=0, EAR=EAR, index=index, threshold=threshold)
+    r = Record(time=time, blink=0, EAR=EAR, index=index, threshold=threshold, user=user)
     r.save()
     return JsonResponse({"blink":0})
 
