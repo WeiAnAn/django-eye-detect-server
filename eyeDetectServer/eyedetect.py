@@ -45,6 +45,28 @@ def findLandmarks(rgbImg, img):
         return leftEye, rightEye, [lpupilXRatio, lpupilYRatio], [rpupilXRatio, rpupilYRatio]
     return [],[],[],[]
 
+def findLandmarksWithoutPupil(rgbImg, img):
+     
+    bb = align.getLargestFaceBoundingBox(rgbImg)
+    if bb is not None:
+        landmarks = align.findLandmarks(rgbImg, bb)
+        leftEye = landmarks[36:42]
+        rightEye = landmarks[42:48]
+        lx,ly,lw,lh = findEyeScale(leftEye)
+        rx,ry,rw,rh = findEyeScale(rightEye)
+
+        # lpupil = check_output(['./eyeDetectServer/eyeLike', "./eyeDetectServer/image/"+img, str(lx), str(ly), str(lw), str(lh)])
+        # rpupil = check_output(['./eyeDetectServer/eyeLike', "./eyeDetectServer/image/"+img, str(rx), str(ry), str(rw), str(rh)])
+        # lpupil = lpupil.split()
+        # rpupil = rpupil.split()
+        lpupilXRatio = -1
+        lpupilYRatio = -1
+        rpupilXRatio = -1
+        rpupilYRatio = -1
+
+        return leftEye, rightEye, [lpupilXRatio, lpupilYRatio], [rpupilXRatio, rpupilYRatio]
+    return [],[],[],[]
+
 def findEyeScale(eye):
     minX = min(eye)[0]
     minY = min(eye,key=itemgetter(1))[1]

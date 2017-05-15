@@ -45,7 +45,7 @@ def findLandmarkYUV(request):
     uuidFileName = str(uuid.uuid4())
     handle_uploaded_file(request.FILES['img'], uuidFileName)
     img = eyedetect.openYUV('./eyeDetectServer/image/'+uuidFileName)
-    leftEye, rightEye, lPupil, rPupil = eyedetect.findLandmarks(img, uuidFileName)
+    leftEye, rightEye, lPupil, rPupil = eyedetect.findLandmarksWithoutPupil(img, uuidFileName)
     
     thread.start_new_thread(delete_uploaded_file,(uuidFileName,))
     # landmark = []
@@ -69,7 +69,7 @@ def isBlink(request):
     uuidFileName = str(uuid.uuid4())
     handle_uploaded_file(request.FILES['img'], uuidFileName)
     img = eyedetect.openYUV('./eyeDetectServer/image/'+uuidFileName)
-    leftEye, rightEye, lPupil, rPupil = eyedetect.findLandmarks(img, uuidFileName)
+    leftEye, rightEye, lPupil, rPupil = eyedetect.findLandmarksWithoutPupil(img, uuidFileName)
     
     if(len(leftEye) == 0):
         r = Record(time=time, blink=-1, EAR=-1, index=index, threshold=threshold)
