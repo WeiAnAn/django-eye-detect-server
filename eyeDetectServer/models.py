@@ -4,7 +4,7 @@ from django.db import models
 
 # Create your models here.
 class Record(models.Model):
-    user_id = models.IntegerField()
+    time = models.IntegerField()
     blink = models.IntegerField(default=1)
     EAR = models.FloatField(default=0)
     threshold = models.FloatField(default=-1)
